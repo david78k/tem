@@ -13,10 +13,14 @@ from urlparse import urlparse
 ###
 ### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
 
+# c11node28
 tenantId = "4ed43001453a478eadbe101353fd175c"
+# f32
+tenantId = "d5eaa0eec79e45728b4c2720ba6489d2"
 
 usehttps = False
-url = "localhost:5000"
+#url = "localhost:5000"
+url = "fg2:5000"
 osuser = "admin"
 ospassword = "password"
 
