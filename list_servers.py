@@ -1,0 +1,88 @@
+#!/usr/bin/python
+
+import base64
+import urllib
+import httplib
+import json
+import os
+from urlparse import urlparse
+
+### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
+###
+###  insert the 'Get OpenStack Credentials' snippet here
+###
+### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
+
+tenantId = "4ed43001453a478eadbe101353fd175c"
+
+usehttps = False
+url = "localhost:5000"
+osuser = "admin"
+ospassword = "password"
+
+params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}, "tenantId":"' + tenantId + '"}}'
+
+headers = {"Content-Type": "application/json"}
+
+if (usehttps == True):
+    conn = httplib.HTTPSConnection(url, key_file='../cert/priv.pem', cert_file='../cert/srv_test.crt')
+else:
+    conn = httplib.HTTPConnection(url)
+
+conn.request("POST", "/v2.0/tokens", params, headers)
+response = conn.getresponse()
+data = response.read()
+dd = json.loads(data)
+
+conn.close()
+
+token = dd['access']['token']
+print json.dumps(token, indent=4)
+
+tokenId = dd['access']['token']['id']
+
+serviceCatalog = dd['access']['serviceCatalog']
+
+nova = dd['access']['serviceCatalog'][0]
+
+publicURL = dd['access']['serviceCatalog'][0]['endpoints'][0]['publicURL']
+
+print "Your token is: %s" % tokenId
+print "Your Nova URL is: %s" % publicURL
+
+#curl -v -H "X-Auth-Token:aaba123ae4df4e1da83681d42553907a" http://localhost:8774/v2/4ed43001453a478eadbe101353fd175c/servers
+
+###
+### Get the list of servers
+###
+
+# HTTP connection #2
+apitoken = tokenId
+url2 = urlparse(publicURL).netloc
+apiurlt = {}
+apiurlt[2] = urlparse(publicURL).path
+
+print "Public URL is \"" + url2 + "\""
+print "Path is \"" + apiurlt[2] + "\""
+
+params2 = urllib.urlencode({})
+headers2 = { "X-Auth-Token":apitoken, "Content-type":"application/json" }
+
+if (usehttps == True):
+    conn2 = httplib.HTTPSConnection(url2, key_file='../cert/priv.pem', cert_file='../cert/srv_test.crt')
+else:
+    conn2 = httplib.HTTPConnection(url2)
+
+conn2.request("GET", "%s/servers" % apiurlt[2], params2, headers2)
+
+# HTTP response #2
+
+response2 = conn2.getresponse()
+data2 = response2.read()
+dd2 = json.loads(data2)
+                           
+conn2.close()
+
+#print dd2
+print json.dumps(dd2, indent=4)
+ 
