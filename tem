@@ -2,8 +2,8 @@
 
 import subprocess
 
-vm1 = "centos6-1"
-vm2 = "centos6-2"
+vm1 = "acton"
+vm2 = "hadoop"
 vm3 = "centos6-3"
 
 vm1_stateF = "OK"
@@ -26,7 +26,9 @@ class VM (Component):
 		# connect to API server
 		#subprocess.call(logincmd + " nova flavor-list", shell=True)
 		#subprocess.call(" nova list")
-		subprocess.call(" nova list", shell=True)
+		cmd = " nova list | sed '1,3d' | awk '{print $4,$6,$8}'"
+		subprocess.call(cmd, shell=True)
+		#subprocess.call(" nova list", shell=True)
 		self.stateF = "OK"
 		self.stateF = "Error"
 
