@@ -14,7 +14,7 @@ password=password
 
 # test service catalog
 #curl -s -X POST http://$host:35357/v2.0/tokens \
-    #-d '{"auth": {"passwordCredentials": {"username":"admin", "password":"4077kts."}, "tenantName":"admin"}}' \
+    #-d '{"auth": {"passwordCredentials": {"username":"admin", "password":"password"}, "tenantName":"admin"}}' \
     #-H "Content-type: application/json" 
     #-d '{"auth": {"passwordCredentials": {"username":"$username", "password":"$password"}, "tenantName":"admin"}}' \
     #-H "Content-type: application/json" | jq .
@@ -23,7 +23,7 @@ password=password
 curl -d '{"auth":{"passwordCredentials":{"username": "admin", "password": "password"}}}' -H "Content-type: application/json" http://$host:5000/v2.0/tokens
 
 # get tenant id
-#curl -H "X-Auth-Token:$token" http://localhost:5000/v2.0/tenants
+#curl -H "X-Auth-Token:$token" http://$host:5000/v2.0/tenants
 
 # get endpoint list
 #curl -k -X 'POST' -v http://$host:5000/v2.0/tokens -d '{"auth":{"passwordCredentials":{"username": "admin", "password":"4077kts."}, "tenantId":"4ed43001453a478eadbe101353fd175c"}}' -H 'Content-type: application/json'
