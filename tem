@@ -1,0 +1,47 @@
+#!/usr/bin/python
+
+import subprocess
+
+vm1 = "centos6-1"
+vm2 = "centos6-2"
+vm3 = "centos6-3"
+
+vm1_stateF = "OK"
+
+logincmd = ". ~/keystonerc_admin;"
+logincmd = ". keystonerc_admin_f32;"
+
+''' VM class '''
+class Component: pass
+
+class VM (Component):
+	def __init__(self, name):
+		self.name = name
+		self.stateF = "OK"
+
+	def getStateF(self): 
+		return self.stateF
+
+	def updateStateF(self): 
+		# connect to API server
+		#subprocess.call(logincmd + " nova flavor-list", shell=True)
+		#subprocess.call(" nova list")
+		subprocess.call(" nova list", shell=True)
+		self.stateF = "OK"
+		self.stateF = "Error"
+
+vms = []
+vms.append(VM(vm1))
+vms.append(VM(vm2))
+vms.append(VM(vm3))
+
+vms[0].updateStateF()
+
+print "+-------------------------------------------+"
+print "| Component | F         | S         | M     |"
+print "+-------------------------------------------+"
+print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
+#print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
+print "| " + vm2 + " | requested | OK        | OK    |"
+print "| " + vm3 + " | OK        | recovered | OK    |"
+print "+-------------------------------------------+"
