@@ -13,25 +13,26 @@ from urlparse import urlparse
 ###
 ### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
 
+tenantId = "d5eaa0eec79e45728b4c2720ba6489d2"
 tenantId = ""
 
 usehttps = False
-url = "localhost:5000"
+#url = "localhost:5000"
 url = "fg2:5000"
 #url = "fg2:5443"
 osuser = "admin"
-ospassword = "password"
+ospassword = "4077kts."
+#ospassword = "password"
+
+tokenId = ""
 
 #print ENV['OS_USERNAME']
 
-#def getTenantId():
-def login():
-	#params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}, "tenantId":"' + tenantId + '"}}'
-	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}, "tenantId":""}}'
-	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
-	#params = '{"auth":{"passwordCredentials":{"username": "admin", "password":"4077kts."}}}'
-	#params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}'
+print url
 
+def login():
+	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
+	params = '{"auth":{"tenantName":"admin", "passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
 	headers = {"Content-Type": "application/json"}
 
 	if (usehttps == True):
@@ -51,16 +52,71 @@ def login():
 
 	return session
 
+def getTenantId():
+	params = '{"X-Auth-Token: ' + tokenId + '"}'
+	params = '{"X-Auth-Token": "' + tokenId + '"}'
+	params = ''
+	headers = {"X-Auth-Token": tokenId, "Content-Type": "application/json"}
+	headers = {"X-Auth-Token": "b8a04a5cab5b4e9bb76588ce1237ac8a", "Content-Type": "application/json"}
+	headers = {"X-Auth-Token": "b8a04a5cab5b4e9bb76588ce1237ac8a"}
+	headers = {"X-Auth-Token": tokenId}
+
+	if (usehttps == True):
+	    conn = httplib.HTTPSConnection(url, key_file='../cert/priv.pem', cert_file='../cert/srv_test.crt')
+	else:
+	    conn = httplib.HTTPConnection(url)
+
+	print params
+	print headers
+
+	#conn.request("POST", "/v2.0/tenants", headers)
+	conn.request("POST", "/v2.0/tenants", params, headers)
+	response = conn.getresponse()
+	data = response.read()
+	jsondata = json.loads(data)
+
+	conn.close()
+	print data
+
+	return jsondata
+
+def getInfo():
+	print "tenantId: " + tenantId
+
+	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}, "tenantId":"' + tenantId + '"}}'
+	headers = {"Content-Type": "application/json"}
+
+	if (usehttps == True):
+	    conn = httplib.HTTPSConnection(url, key_file='../cert/priv.pem', cert_file='../cert/srv_test.crt')
+	else:
+	    conn = httplib.HTTPConnection(url)
+
+	print params
+	print headers
+
+	conn.request("POST", "/v2.0/tokens", params, headers)
+	response = conn.getresponse()
+	data = response.read()
+	session = json.loads(data)
+
+	conn.close()
+
+	print data
+
+	return session
+
 session = login()
 print json.dumps(session, indent=4)
 
-tenantId = session['access']['user']['id']
+userId = session['access']['user']['id']
 tokenId = session['access']['token']['id']
-#print json.dumps(tokenId, indent=4)
-print "Your tenatId is: %s" % tenantId
+#tenantId = getTenantId()
+
+print "Your tenantId is: %s" % tenantId
 print "Your token is: %s" % tokenId
 
-#getTenantId()
+#session = getInfo()
+#print json.dumps(session, indent=4)
 
 '''
 serviceCatalog = session['access']['serviceCatalog']

@@ -1,0 +1,153 @@
+fg2:5000
+{
+    "access": {
+        "token": {
+            "issued_at": "2013-05-31T22:09:25.395254", 
+            "expires": "2013-06-01T22:09:25Z", 
+            "id": "14db239fc1f3493dae3a44f7a25b42d4", 
+            "tenant": {
+                "enabled": true, 
+                "description": "admin tenant", 
+                "name": "admin", 
+                "id": "d5eaa0eec79e45728b4c2720ba6489d2"
+            }
+        }, 
+        "serviceCatalog": [
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:8774/v2/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:8774/v2/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "internalURL": "http://128.227.59.172:8774/v2/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "id": "9d01bef8c0e04813a9bae684c4459d62"
+                    }
+                ], 
+                "type": "compute", 
+                "name": "nova"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:9696/", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:9696/", 
+                        "internalURL": "http://128.227.59.172:9696/", 
+                        "id": "407ed092a0944a2ba23646dceed7908a"
+                    }
+                ], 
+                "type": "network", 
+                "name": "quantum"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:8080", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:8080", 
+                        "internalURL": "http://128.227.59.172:8080", 
+                        "id": "bb2372687d364210b27bf21cf9ccd23d"
+                    }
+                ], 
+                "type": "s3", 
+                "name": "swift_s3"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:9292", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:9292", 
+                        "internalURL": "http://128.227.59.172:9292", 
+                        "id": "61af7eae3ae34fa69fc7da405963be78"
+                    }
+                ], 
+                "type": "image", 
+                "name": "glance"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:8776/v1/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:8776/v1/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "internalURL": "http://128.227.59.172:8776/v1/d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "id": "e1607cadb80344b38549eff1f8688eb5"
+                    }
+                ], 
+                "type": "volume", 
+                "name": "cinder"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:8773/services/Admin", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:8773/services/Cloud", 
+                        "internalURL": "http://128.227.59.172:8773/services/Cloud", 
+                        "id": "801dcd8249954f7eb48924ae79b74cb8"
+                    }
+                ], 
+                "type": "ec2", 
+                "name": "nova_ec2"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:8080/", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:8080/v1/AUTH_d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "internalURL": "http://128.227.59.172:8080/v1/AUTH_d5eaa0eec79e45728b4c2720ba6489d2", 
+                        "id": "096746e848de44ce88816a1a344c85dd"
+                    }
+                ], 
+                "type": "object-store", 
+                "name": "swift"
+            }, 
+            {
+                "endpoints_links": [], 
+                "endpoints": [
+                    {
+                        "adminURL": "http://128.227.59.172:35357/v2.0", 
+                        "region": "RegionOne", 
+                        "publicURL": "http://128.227.59.172:5000/v2.0", 
+                        "internalURL": "http://128.227.59.172:5000/v2.0", 
+                        "id": "09bf7f96288e43a68321253fadcd86b1"
+                    }
+                ], 
+                "type": "identity", 
+                "name": "keystone"
+            }
+        ], 
+        "user": {
+            "username": "admin", 
+            "roles_links": [], 
+            "id": "4ba1075b88734c769006bc6840683fbd", 
+            "roles": [
+                {
+                    "name": "_member_"
+                }, 
+                {
+                    "name": "admin"
+                }
+            ], 
+            "name": "admin"
+        }, 
+        "metadata": {
+            "is_admin": 0, 
+            "roles": [
+                "9fe2ff9ee4384b1894a90878d3e92bab", 
+                "e419159c5c81409584163ff647434d1e"
+            ]
+        }
+    }
+}
+Your tenantId is: 
+Your token is: 14db239fc1f3493dae3a44f7a25b42d4
