@@ -7,12 +7,6 @@ import json
 import os
 from urlparse import urlparse
 
-### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
-###
-###  insert the 'Get OpenStack Credentials' snippet here
-###
-### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
-
 tenantId = "d5eaa0eec79e45728b4c2720ba6489d2"
 tenantId = ""
 
@@ -28,6 +22,11 @@ tokenId = ""
 
 print "Host URL: " + url
 
+### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
+###
+###  insert the 'Get OpenStack Credentials' snippet here
+###
+### --8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--8<--
 def login():
 	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
 	params = '{"auth":{"tenantName":"admin", "passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
@@ -142,22 +141,61 @@ def getServerDetail(server):
 	#print json.dumps(session, indent=4)
 	return session['server']
 
+''' VM class '''
+class Component: pass
+
+class VM (Component):
+        def __init__(self, name):
+                self.name = name
+                self.F = "OK"
+                self.S = "OK"
+                self.M = "OK"
+
+        def getStateF(self):
+                return self.F
+
+        def updateStateF(self):
+                # connect to API server
+                #subprocess.call(logincmd + " nova flavor-list", shell=True)
+                #subprocess.call(" nova list")
+                cmd = " nova list | sed '1,3d' | awk '{print $4,$6,$8}'"
+                subprocess.call(cmd, shell=True)
+                #subprocess.call(" nova list", shell=True)
+                self.F = "OK"
+                self.F = "Error"
+
 vms = []
+
 for server in servers:
 #	href = server['links'][0]['href']
 	#print json.dumps(server, indent=4)
-	print server['name']
+	vmname = server['name']
+	print vmname
 	detail = getServerDetail(server)
 	#print json.dumps(detail, indent=4)
-	print json.dumps(detail['status'], indent=4)
+	statusS = detail['status']
+	#print status
+	vm = VM(vmname)
+	vm.S = statusS
+	vms.append(vm)
 	
+	print json.dumps(detail, indent=4)
+	if statusS != "ACTIVE":
+		print "something wrong"
+		fault = detail['fault']
+		#vm.S += "(" + str(fault['code']) + "): " + fault['message'] + " " + fault['details']
+		vm.S += "(" + str(fault['code']) + "): " + fault['message'] 
+		#print str(vm.S)
 	print 	
 
 print "+-------------------------------------------+"
 print "| Component | F         | S         | M     |"
 print "+-------------------------------------------+"
+for vm in vms:
+	print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
+print "+-------------------------------------------+"
+
 #print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
 #print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
 #print "| " + vm2 + " | requested | OK        | OK    |"
 #print "| " + vm3 + " | OK        | recovered | OK    |"
-print "+-------------------------------------------+"
