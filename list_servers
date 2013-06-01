@@ -19,7 +19,6 @@ tenantId = ""
 usehttps = False
 #url = "localhost:5000"
 url = "fg2:5000"
-#url = "fg2:5443"
 osuser = "admin"
 ospassword = "password"
 
@@ -27,7 +26,7 @@ tokenId = ""
 
 #print ENV['OS_USERNAME']
 
-print url
+print "Host URL: " + url
 
 def login():
 	params = '{"auth":{"passwordCredentials":{"username": "' + osuser + '", "password":"' + ospassword + '"}}}'
@@ -100,30 +99,24 @@ def getInfo():
 
 	conn.close()
 
-	print data
+#	print data
 
 	return session
 
 session = login()
-print json.dumps(session, indent=4)
+#print json.dumps(session, indent=4)
 
-userId = session['access']['user']['id']
-tokenId = session['access']['token']['id']
-#tenantId = getTenantId()
+access = session['access']
+userId = access['user']['id']
+tokenId = access['token']['id']
+tenantId = access['token']['tenant']['id']
+
+serviceCatalog = access['serviceCatalog']
+nova = serviceCatalog[0]
+publicURL = nova['endpoints'][0]['publicURL']
 
 print "Your tenantId is: %s" % tenantId
 print "Your token is: %s" % tokenId
-
-#session = getInfo()
-#print json.dumps(session, indent=4)
-
-'''
-serviceCatalog = session['access']['serviceCatalog']
-
-nova = serviceCatalog[0]
-
-publicURL = nova['endpoints'][0]['publicURL']
-
 print "Your Nova URL is: %s" % publicURL
 
 #curl -v -H "X-Auth-Token:aaba123ae4df4e1da83681d42553907a" http://localhost:8774/v2/4ed43001453a478eadbe101353fd175c/servers
@@ -161,4 +154,3 @@ conn2.close()
 
 #print session2
 print json.dumps(session2, indent=4)
-''' 
