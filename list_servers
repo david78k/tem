@@ -104,10 +104,7 @@ conn2.close()
 
 print
 servers = session2['servers']
-#print json.dumps(servers, indent=4)
 print str(len(servers)) + " servers"
-#print json.dumps(servers[0]['name'], indent=4)
-#print json.dumps(servers[1]['name'], indent=4)
 
 ###
 ### Get the status of servers
@@ -119,9 +116,9 @@ def getServerDetail(server):
 	apiurlt = {}
 	apiurlt[2] = urlparse(publicURL).path
 
-	print "Server URL is \"" + url + "\""
+#	print "Server URL is \"" + url + "\""
 	print "Path is \"" + apiurlt[2] + "\""
-	print "Your token is: %s" % apitoken
+#	print "Your token is: %s" % apitoken
 
 	params = urllib.urlencode({})
 	headers = { "X-Auth-Token":apitoken, "Content-type":"application/json" }
@@ -145,6 +142,7 @@ def getServerDetail(server):
 	#print json.dumps(session, indent=4)
 	return session['server']
 
+vms = []
 for server in servers:
 #	href = server['links'][0]['href']
 	#print json.dumps(server, indent=4)
@@ -155,3 +153,11 @@ for server in servers:
 	
 	print 	
 
+print "+-------------------------------------------+"
+print "| Component | F         | S         | M     |"
+print "+-------------------------------------------+"
+#print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
+#print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
+#print "| " + vm2 + " | requested | OK        | OK    |"
+#print "| " + vm3 + " | OK        | recovered | OK    |"
+print "+-------------------------------------------+"
