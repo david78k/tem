@@ -198,14 +198,15 @@ for server in servers:
 		#print str(vm.S)
 	print 	
 
-print "+-------------------------------------------------------------+"
+print "can handle the fault? status = Error/Requested/Recovered"
+print "+-------------------------------------------------------------------+"
 #print "| Component | F         | S         | M     |"
-print '| {0:10} | {1:5} | {2:30} | {3:5} |'.format('Component', 'F', 'S', 'M')
-print "+-------------------------------------------------------------+"
+print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/mgmt/API)')
+print "+-------------------------------------------------------------------+"
 for vm in vms:
 	#print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
-	print '| {0:10} | {1:5} | {2:30} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
-print "+-------------------------------------------------------------+"
+	print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
+print "+-------------------------------------------------------------------+"
 
 #print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
 #print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
