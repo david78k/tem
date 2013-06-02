@@ -185,6 +185,11 @@ for server in servers:
 		if powerstate == 1:
 			powerstate = "running"
 		vm.S += "(" + powerstate + ")"
+	elif statusS == "SHUTOFF":
+		powerstate = detail['OS-EXT-STS:power_state']
+		if powerstate == 4:
+			powerstate = "shutdown"
+		vm.S += "(" + powerstate + ")"
 	else:
 		print "something wrong"
 		fault = detail['fault']
@@ -193,12 +198,14 @@ for server in servers:
 		#print str(vm.S)
 	print 	
 
-print "+-------------------------------------------+"
-print "| Component | F         | S         | M     |"
-print "+-------------------------------------------+"
+print "+-------------------------------------------------------------+"
+#print "| Component | F         | S         | M     |"
+print '| {0:10} | {1:5} | {2:30} | {3:5} |'.format('Component', 'F', 'S', 'M')
+print "+-------------------------------------------------------------+"
 for vm in vms:
-	print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
-print "+-------------------------------------------+"
+	#print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
+	print '| {0:10} | {1:5} | {2:30} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
+print "+-------------------------------------------------------------+"
 
 #print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
 #print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
