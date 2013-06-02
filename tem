@@ -116,7 +116,7 @@ def getServerDetail(server):
 	apiurlt[2] = urlparse(publicURL).path
 
 #	print "Server URL is \"" + url + "\""
-	print "Path is \"" + apiurlt[2] + "\""
+	#print "Path is \"" + apiurlt[2] + "\""
 #	print "Your token is: %s" % apitoken
 
 	params = urllib.urlencode({})
@@ -144,6 +144,7 @@ def getServerDetail(server):
 ''' VM class '''
 class Component: pass
 
+# inherited from Component class
 class VM (Component):
         def __init__(self, name):
                 self.name = name
@@ -179,7 +180,8 @@ for server in servers:
 	vm.S = statusS
 	vms.append(vm)
 	
-	print json.dumps(detail, indent=4)
+#	print json.dumps(detail, indent=4)
+
 	if statusS == "ACTIVE":
 		powerstate = detail['OS-EXT-STS:power_state']
 		if powerstate == 1:
@@ -191,11 +193,18 @@ for server in servers:
 			powerstate = "shutdown"
 		vm.S += "(" + powerstate + ")"
 	else:
-		print "something wrong"
+#		print "something wrong"
 		fault = detail['fault']
+#		print json.dumps(fault, indent=4)
+
 		#vm.S += "(" + str(fault['code']) + "): " + fault['message'] + " " + fault['details']
 		vm.S += "(" + str(fault['code']) + "): " + fault['message'] 
 		#print str(vm.S)
+		
+		# can handle the fault?
+		# if the fault is in the fault recovery table (FRT) take the action
+		# error_code or error_message | recovery action
+		# else request translation to the CP-CFH (address required)
 	print 	
 
 print "can handle the fault? status = Error/Requested/Recovered"
