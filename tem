@@ -180,7 +180,12 @@ for server in servers:
 	vms.append(vm)
 	
 	print json.dumps(detail, indent=4)
-	if statusS != "ACTIVE":
+	if statusS == "ACTIVE":
+		powerstate = detail['OS-EXT-STS:power_state']
+		if powerstate == 1:
+			powerstate = "running"
+		vm.S += "(" + powerstate + ")"
+	else:
 		print "something wrong"
 		fault = detail['fault']
 		#vm.S += "(" + str(fault['code']) + "): " + fault['message'] + " " + fault['details']
