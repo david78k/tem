@@ -2,7 +2,7 @@
 
 import base64
 import urllib, httplib
-import json
+import json, sys
 import os, subprocess
 from urlparse import urlparse
 from threading import Thread
@@ -17,6 +17,8 @@ url = "fg2:5000"
 osuser = "admin"
 ospassword = "password"
 
+printDetail = False
+printDetail = True
 timeout = 1 # ping timeout
 tokenId = ""
 
@@ -207,10 +209,12 @@ def listServers():
 	#	href = server['links'][0]['href']
 		#print json.dumps(server, indent=4)
 		vmname = server['name']
+		#sys.stdout.write(vmname + ' ')
 		print vmname
 
 		detail = getServerDetail(server)
-		print json.dumps(detail, indent=4)
+		if printDetail:
+			print json.dumps(detail, indent=4)
 		statusS = detail['status']
 		#print status
 		vm = VM(vmname)
