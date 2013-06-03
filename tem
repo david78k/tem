@@ -1,10 +1,9 @@
 #!/usr/bin/python
 
 import base64
-import urllib
-import httplib
+import urllib, httplib
 import json
-import os
+import os, subprocess
 from urlparse import urlparse
 
 tenantId = "d5eaa0eec79e45728b4c2720ba6489d2"
@@ -15,6 +14,7 @@ usehttps = False
 url = "fg2:5000"
 osuser = "admin"
 ospassword = "password"
+ospassword = "4077kts."
 
 tokenId = ""
 
@@ -150,7 +150,7 @@ class VM (Component):
                 self.name = name
                 self.F = "OK"
                 self.S = "OK"
-                self.M = "OK"
+                self.M = "OK (OK/OK/OK/OK)"
 
         def getStateF(self):
                 return self.F
@@ -172,8 +172,9 @@ for server in servers:
 	#print json.dumps(server, indent=4)
 	vmname = server['name']
 	print vmname
+
 	detail = getServerDetail(server)
-	#print json.dumps(detail, indent=4)
+	print json.dumps(detail, indent=4)
 	statusS = detail['status']
 	#print status
 	vm = VM(vmname)
@@ -187,6 +188,11 @@ for server in servers:
 		if powerstate == 1:
 			powerstate = "running"
 		vm.S += "(" + powerstate + ")"
+		#addr = detail['addresses']['virbr0']
+		addr = detail['addresses']['virbr0'][0]['addr']
+		print json.dumps(addr, indent=4)
+		subprocess.call('ping -c 1 -w 1 ' + addr, shell=True)
+		vm.S += ': timeout'
 	elif statusS == "SHUTOFF":
 		powerstate = detail['OS-EXT-STS:power_state']
 		if powerstate == 4:
@@ -208,16 +214,13 @@ for server in servers:
 	print 	
 
 print "can handle the fault? status = Error/Requested/Recovered"
+print "ping/mgmt-console-dashboard:80/auth:5000/nova-API:8774"
 print "+-------------------------------------------------------------------+"
 #print "| Component | F         | S         | M     |"
-print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/mgmt/API)')
+print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/dashboard/auth/nova-API)')
 print "+-------------------------------------------------------------------+"
 for vm in vms:
 	#print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
 	print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
 print "+-------------------------------------------------------------------+"
 
-#print "| " + vm1 + " | " + vms[0].getStateF() + " | OK        | error |"
-#print "| " + vm1 + " | " + vm1_stateF + " | OK        | error |"
-#print "| " + vm2 + " | requested | OK        | OK    |"
-#print "| " + vm3 + " | OK        | recovered | OK    |"
