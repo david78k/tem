@@ -207,26 +207,30 @@ for server in servers:
 	else:
 #		print "something wrong"
 		fault = detail['fault']
+		fmessage = fault['message']
 #		print json.dumps(fault, indent=4)
 
 		#vm.S += "(" + str(fault['code']) + "): " + fault['message'] + " " + fault['details']
-		vm.S += "(" + str(fault['code']) + "): " + fault['message'] 
+		vm.S += "(" + str(fault['code']) + "): " + fmessage 
 		#print str(vm.S)
 		
 		# can handle the fault?
 		# if the fault is in the fault recovery table (FRT) take the action
 		# error_code or error_message | recovery action
 		# else request translation to the CP-CFH (address required)
+		flist = ['InstanceExists']
+		if fmessage not in flist:
+			vm.S += " (requested)"
 	print 	
 
 print "can handle the fault? status = Error/Requested/Recovered"
 print "ping/mgmt-console-dashboard:80/auth:5000/nova-API:8774"
-print "+-------------------------------------------------------------------+"
+print "+-------------------------------------------------------------------------------+"
 #print "| Component | F         | S         | M     |"
-print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/dashboard/auth/nova-API)')
-print "+-------------------------------------------------------------------+"
+print '| {0:10} | {1:7} | {2:35} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/dashboard/auth/nova-API)')
+print "+-------------------------------------------------------------------------------+"
 for vm in vms:
 	#print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
-	print '| {0:10} | {1:7} | {2:30} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
-print "+-------------------------------------------------------------------+"
+	print '| {0:10} | {1:7} | {2:35} | {3:5} |'.format(vm.name, vm.F, vm.S, vm.M)
+print "+-------------------------------------------------------------------------------+"
 
