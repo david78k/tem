@@ -189,7 +189,7 @@ for server in servers:
 		vm.S += "(" + powerstate + "/"
 
 		#addr = detail['addresses']['virbr0'][0]['addr']
-		addr = detail['addresses']['novanetwork'][0]['addr']
+		#addr = detail['addresses']['novanetwork'][0]['addr']
 		addr = detail['addresses'][detail['addresses'].keys()[0]][0]['addr']
 		print json.dumps(addr, indent=4)
 		ret = subprocess.call('ping -c 1 -w 1 ' + addr, shell=True)
