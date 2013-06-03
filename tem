@@ -148,6 +148,8 @@ class VM (Component):
         def __init__(self, name):
                 self.name = name
                 self.F = "OK"
+		if name == "acton":
+	                self.F = "Error (resize failed)"
                 self.S = "OK"
                 self.M = "OK (OK/OK/OK/OK)"
 
@@ -224,10 +226,11 @@ for server in servers:
 	print 	
 
 print "can handle the fault? status = Error/Requested/Recovered"
+print "VM operations: CPU, resize, rename, update address, migrate, rebuild, snapshop, backup"
 print "ping/mgmt-console-dashboard:80/auth:5000/nova-API:8774"
 print "+-------------------------------------------------------------------------------+"
 #print "| Component | F         | S         | M     |"
-print '| {0:10} | {1:7} | {2:35} | {3:5} |'.format('Component', 'F (CPU)', 'S (availability/ping) can handle?', 'M (ping/dashboard/auth/nova-API)')
+print '| {0:10} | {1:7} | {2:35} | {3:5} |'.format('Component', 'F (VM ops)', 'S (availability/ping) can handle?', 'M (ping/dashboard/auth/nova-API)')
 print "+-------------------------------------------------------------------------------+"
 for vm in vms:
 	#print "| " + vm.name  + " | " + vm.F + " | " + vm.S + " | " + vm.M + " |"
