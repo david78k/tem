@@ -186,12 +186,18 @@ for server in servers:
 		powerstate = detail['OS-EXT-STS:power_state']
 		if powerstate == 1:
 			powerstate = "running"
-		vm.S += "(" + powerstate + ")"
+		vm.S += "(" + powerstate + "/"
+
 		#addr = detail['addresses']['virbr0']
 		addr = detail['addresses']['virbr0'][0]['addr']
 		print json.dumps(addr, indent=4)
-		subprocess.call('ping -c 1 -w 1 ' + addr, shell=True)
-		vm.S += ': timeout'
+		ret = subprocess.call('ping -c 1 -w 1 ' + addr, shell=True)
+		if ret == 0:
+			vm.S += 'alive)'
+        	    #print "%s: is alive" % ip
+	        else:
+			vm.S += 'timeout)'
+			#vm.S += 'dead)'
 	elif statusS == "SHUTOFF":
 		powerstate = detail['OS-EXT-STS:power_state']
 		if powerstate == 4:
