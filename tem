@@ -14,7 +14,6 @@ usehttps = False
 url = "fg2:5000"
 osuser = "admin"
 ospassword = "password"
-ospassword = "4077kts."
 
 tokenId = ""
 
