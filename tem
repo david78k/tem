@@ -18,7 +18,7 @@ osuser = "admin"
 ospassword = "password"
 
 printDetail = False
-printDetail = True
+#printDetail = True
 timeout = 1 # ping timeout
 tokenId = ""
 
@@ -161,8 +161,6 @@ class VM (Component):
         def __init__(self, name):
                 self.name = name
                 self.F = "OK"
-		if name == "acton":
-	                self.F = "Error (resize failed)"
                 self.S = "OK"
                 self.M = "OK (OK/OK/OK/OK)"
 		self.addr = ''
@@ -201,6 +199,19 @@ def pinger(q):
 	    vm.S += 'timeout)'
         q.task_done()
 
+def request(vm, fmessage):
+	import socket               # Import socket module
+
+	s = socket.socket()         # Create a socket object
+	host = socket.gethostname() # Get local machine name
+	host = 'fg2'             # Get remote machine name
+	port = 12345                # Reserve a port for your service.
+
+	s.connect((host, port))
+	s.send('translation request: %s@%s' % (fmessage, vm.name))
+	print s.recv(1024)
+	s.close 
+
 def listServers():
 	queue = Queue()
 	vms = []
@@ -228,6 +239,8 @@ def listServers():
 			if powerstate == 1:
 				powerstate = "running"
 			vm.S += "(" + powerstate + "/"
+			if vm.name == 'ttylinux':
+				vm.F = 'Migrate failed'
 
 			#addr = detail['addresses']['virbr0'][0]['addr']
 			#addr = detail['addresses']['novanetwork'][0]['addr']
@@ -254,7 +267,11 @@ def listServers():
 			fault = detail['fault']
 			fmessage = fault['message']
 	#		print json.dumps(fault, indent=4)
-	
+
+			vm.F = 'Create failed'	
+			if vm.name == "acton":
+	                	vm.F = "Resize failed"
+	                	#vm.F = "Error (resize failed)"
 			#vm.S += "(" + str(fault['code']) + "): " + fault['message'] + " " + fault['details']
 			vm.S += "(" + str(fault['code']) + "): " + fmessage 
 			#print str(vm.S)
@@ -265,6 +282,8 @@ def listServers():
 			# else request translation to the CP-CFH (address required)
 			flist = ['InstanceExists']
 			if fmessage not in flist:
+				request(vm, fmessage)
+				#print "requested"
 				vm.S += " (requested)"
 		print 	
 	
