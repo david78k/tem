@@ -12,14 +12,15 @@ tenantId = "d5eaa0eec79e45728b4c2720ba6489d2"
 tenantId = ""
 
 usehttps = False
-#url = "localhost:5000"
-url = "fg2:5000"
+url = "localhost:5000"
+#url = "fg2:5000"
+#url = "c11node28:5000"
 osuser = "admin"
 ospassword = "password"
 
-printDetail = False
-#printDetail = True
-timeout = 1 # ping timeout
+debug = False
+#debug = True
+timeout = 1 # ping timeou
 tokenId = ""
 
 #print ENV['OS_USERNAME']
@@ -62,7 +63,8 @@ def login():
 	return session
 
 session = login()
-#print json.dumps(session, indent=4)
+if debug:
+	print json.dumps(session, indent=4)
 
 access = session['access']
 userId = access['user']['id']
@@ -71,6 +73,11 @@ tenantId = access['token']['tenant']['id']
 
 serviceCatalog = access['serviceCatalog']
 nova = serviceCatalog[0]
+for service in serviceCatalog:
+	#print json.dumps(service, indent=4)
+	if service['name'] == 'nova':
+		nova = service
+
 publicURL = nova['endpoints'][0]['publicURL']
 
 print "Your tenantId is: %s" % tenantId
@@ -224,7 +231,7 @@ def listServers():
 		print vmname
 
 		detail = getServerDetail(server)
-		if printDetail:
+		if debug:
 			print json.dumps(detail, indent=4)
 		statusS = detail['status']
 		#print status
