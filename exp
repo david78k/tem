@@ -5,7 +5,6 @@ mgmt=c11node27
 # out of band channel (control channel)
 # for faultload channel (eth0)
 server=c11node27-eth0
-server=c11node27-eth0
 
 # workload channel
 master=10.244.34.120 
@@ -49,4 +48,12 @@ ssh $server iptables -D ...
 # corrupt hdfs blocks
 java -jar $anarchyape/ape.jar ...
 
+# disk I/O blocking by dd?
+
+# API errors
+ 
+
+# memory, cpu errors
+# memory bit flops, memory hog
+# cpu register errors, cpu hog
  
