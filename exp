@@ -1,0 +1,47 @@
+#!/bin/bash
+# main channel for workload
+# management channel (eth1)
+mgmt=c11node27
+# out of band channel (control channel)
+# for faultload channel (eth0)
+server=c11node27-eth0
+server=c11node27-eth0
+
+# workload channel
+master=10.244.34.120 
+slave1=10.244.34.112
+slave2=10.244.34.116
+slave3=10.244.34.118
+
+tem_client="/root/tem/tem-client"
+
+# start tem client if not already started
+$tem_client start
+
+# start mapreduce jobs in thread or background
+ssh master hadoop examples.jar wordcount input output &
+
+#*******************************************
+# start faultload thread
+# when to inject faults? injection points
+# probability: MTTB, erlang, exponential
+#*******************************************
+# eth1 down to simulate either node crash or nic crash
+ssh $server ifconfig eth1 down
+
+# mamangement server down
+ssh $server service cloud-management stop
+
+# block 8080 port
+ssh $server iptables -A ...
+
+# packet drop
+#ssh $server tc ...
+
+# packet delay
+#ssh $server tc qdisc add dev eth0 root netem delay 100.0ms && sleep 30.0 && tc qdisc del dev eth0 root netem
+
+# corrupt hdfs blocks
+
+
+ 
