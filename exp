@@ -5,6 +5,7 @@ mgmt=c11node27
 # out of band channel (control channel)
 # for faultload channel (eth0)
 server=c11node27-eth0
+if=cloudbr0
 
 # workload channel
 master=10.244.34.120 
@@ -16,10 +17,15 @@ tem_client="/root/tem/tem-client"
 anarchyape="/root/anarchyape"
 
 # start tem client if not already started
-$tem_client start
+#$tem_client start
+
+# start measuring uptime
 
 # start mapreduce jobs in thread or background
-ssh master hadoop examples.jar wordcount input output &
+#ssh master hadoop examples.jar wordcount input output &
+ssh master /root/hadoop/wordcount &
+#ssh master /root/terasort &
+#ssh master /root/grep &
 
 #*******************************************
 # start faultload thread
@@ -27,17 +33,18 @@ ssh master hadoop examples.jar wordcount input output &
 # probability: MTTB, erlang, exponential
 #*******************************************
 # eth1 down to simulate either node crash or nic crash
-ssh $server ifconfig eth1 down
+#ssh $server ifconfig $if down
 
 # mamangement server down
-ssh $server service cloud-management stop
+#ssh $server service cloud-management stop
 # mamangement server start
-ssh $server service cloud-management start
+#ssh $server service cloud-management start
 
 # block 8080 port
-ssh $server iptables -A ...
+ssh $server iptables -A INPUT -p tcp --dport 8080 -j DROP
+sleep 3
 # unblock 8080 port
-ssh $server iptables -D ...
+ssh $server iptables -D INPUT -p tcp --dport 8080 -j DROP
 
 # packet drop
 #ssh $server tc ...
@@ -46,7 +53,7 @@ ssh $server iptables -D ...
 #ssh $server tc qdisc add dev eth0 root netem delay 100.0ms && sleep 30.0 && tc qdisc del dev eth0 root netem
 
 # corrupt hdfs blocks
-java -jar $anarchyape/ape.jar ...
+#java -jar $anarchyape/ape.jar ...
 
 # disk I/O blocking by dd?
 
@@ -57,3 +64,4 @@ java -jar $anarchyape/ape.jar ...
 # memory bit flops, memory hog
 # cpu register errors, cpu hog
  
+wait
