@@ -27,11 +27,12 @@ ssh master /root/hadoop/wordcount &
 #ssh master /root/terasort &
 #ssh master /root/grep &
 
-#*******************************************
+################################################
 # start faultload thread
 # when to inject faults? injection points
 # probability: MTTB, erlang, exponential
-#*******************************************
+################################################
+
 # eth1 down to simulate either node crash or nic crash
 #ssh $server ifconfig $if down
 
@@ -64,4 +65,25 @@ ssh $server iptables -D INPUT -p tcp --dport 8080 -j DROP
 # memory bit flops, memory hog
 # cpu register errors, cpu hog
  
+################################################
+# user operations: select operations in a pool during the job (e.g., MapReduce) in progress
+# {list, create, rename, resize, take snapshot, change flavor, attach/detach volume, attach/detach nic}
+# user will have api errors.
+################################################ 
+
+# list VMs
+cloudmonkey list virtualmachines filter=displayname,name,instancename,state,haenable,cpunumber,cpuspeed,cpuused,memory,serviceofferingname
+
+# create a VM due to performance degradataion (autoscaling?)
+# user may want more VMs to maintain a certain level of job performance or resource utilization. 
+# e.g., up to CPU 85%, memory 90%, disk 90%
+# if the utilization is over the threshold, user creates more VMs or attach more volumes.
+# for this to work, user needs a monitoring system provided either by the provider or by itself.
+# in this case, the monitoring system can fail to monitor if mgmt/api layer crashes.
+#cloudmonkey deploy virtualmachine templateid=13ccff62-132b-4caf-b456-e8ef20cbff0e zoneid=e1bfdfaf-3d9b-43d4-9aea-2c9f173a1ae7 serviceofferingid=ef2537ad-c70f-11e1-821b-0800277e749c
+
+# attach a volumne
+
+# take snapshot
+
 wait
