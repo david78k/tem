@@ -11,6 +11,6 @@ This version is mainly for OpenStack.
 - exp: script for experiments including 
 - workload generation
 - fault injection  
-  LD_PRELOAD  
-  slowdisk  
-  ddtest
+  		/LD_PRELOAD  
+                /slowdisk  
+  		/ddtest
