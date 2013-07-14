@@ -1,0 +1,4 @@
+time -p dd if=/dev/zero of=ddfile1-1 bs=8k count=1000000 && sync
+time -p dd if=/dev/zero of=ddfile1-2 bs=8K count=500000
+time -p dd if=ddfile1-1 of=/dev/null bs=8k
+

@@ -1,0 +1,8 @@
+# for drive performance benchmarking
+# 5GB file
+filesize=5000000
+filename=largefile
+
+dd if=/dev/zero bs=1024 count=$filesize of=$filename
+dd if=$filename of=/dev/null bs=64k
+

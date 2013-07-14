@@ -1,0 +1,4 @@
+#gcc prog.c -o prog
+
+#gcc -Wall -fPIC -shared -o myfopen.so myfopen.c
+gcc myopen.c -Wall -fPIC -shared -o myfopen.so
