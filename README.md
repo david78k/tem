@@ -10,8 +10,7 @@ This version is mainly for OpenStack.
      It uses ping to the component for SLA element.
 - exp: script for experiments including 
 - workload generation
-- fault injection
-
-LD_PRELOAD
-slowdisk
-ddtest
+- fault injection  
+  LD_PRELOAD  
+  slowdisk  
+  ddtest
